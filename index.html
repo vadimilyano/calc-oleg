@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculator</title>
+    <link rel="icon" href="img/icon.png">
+    <style>
+      body{
+        background-color: rgb(125, 125, 249);
+      }
+      .container{
+        position: absolute;
+        width: 25%;
+        height: fit-content;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        border: 3px solid rgb(0, 0, 255);
+        box-shadow: 0 0 0px 3px rgb(0, 0, 200);
+        text-align: center;
+        background-color: rgb(108, 108, 251);
+      }
+      button{
+        width: 100%;
+        font-size: xx-large;
+      }
+    </style>
+</head>
+<body>
+  </div>
+    <form method="post">
+      <div class="container">
+        <button type="submit">начать</button>
+      </div>
+    </form>
+    <script>
+      function c(){
+        localStorage.setItem('is-registed','yes')
+        window.location.href = "file.html";
+      }
+      if (localStorage.getItem('is-registed')=='yes'){
+        window.location.href = "file.html";
+      }
+        const URL_APP = "https://script.google.com/macros/s/AKfycbxg4m5doQJJjeFoQhIRJl9uu8ZpKDdSPyvp2mQJaBOfLtjuuLgIOLMGG7N-W_PL48Kc1A/exec";
+        let form = document.querySelector('form')
+        form.action=URL_APP;
+        form.addEventListener("submit",(ev) => {
+        ev.preventDefault();
+
+        const name = document.querySelector(".name");
+        const email = document.querySelector(".email");
+        const password = document.querySelector(".password");
+        const second_name = document.querySelector(".second_name");
+
+        let details = {
+          name: 'clicked',
+          email: 'on',
+          password: 'start',
+          second_name:'clicked',
+          reg:true,
+          number:'',
+          text:''
+        };
+
+        let formBody = [];
+        for (let property in details) {
+          let encodedKey = encodeURIComponent(property);
+          let encodedValue = encodeURIComponent(details[property]);
+          formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");  
+        document.querySelector('button').textContent = 'пожалуйста, подождите...'
+        const result = fetch(URL_APP, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+          },
+          mode: "cors", //<- оставим по умолчанию
+          body: formBody,
+        }).then((res) =>c())
+        })
+    </script>
+</body>
+</html>

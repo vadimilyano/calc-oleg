@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <title>calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="img/icon.png">
+</head>
+<body onload="view()">
+    <div class="header">
+        <h1>Финансовое планирование</h1>
+    </div>
+    <div class="canvas">
+        <canvas id="myChart"></canvas>
+        <button onclick="view();" style="width: 100%;">обновить</button>
+    </div>
+    <div id="UI">
+        <div>
+            <label for="year">на сколько лет просчитаем?</label>
+            <input id="year" type="number" value="1" max="20" style="text-align: center;">
+        </div>
+        <label for="start_moneys">ваши начальные деньги:</label>
+        <input type="text" id="start_moneys" value="0" style="margin-left: 23px; text-align: center;" onchange="document.querySelector('#start_moneys').value = normalizate_num(document.querySelector('#start_moneys').value)">
+        <div>
+            <label for="end">ваши конечные деньги:</label>
+            <input type="text" id="end" readonly="readonly" style="margin-left: 30px; text-align: center;">
+        </div>
+    </div>
+    <div style="height: 50px;"></div>
+    <div id="container"></div>
+    <div style="height: 20px;"></div>
+    <button onclick="new_input();">новое поле</button>
+    <div id="teh">ТГ: @prokopevoleg  WHATSAPP: +7 (904) 387-87-97</div>
+    <div class="like" style="height: 200px; width: 500px; position: fixed; top: 100%; transform: translate(0%,-90%); left: 50%;">
+        <label id="range">50/100</label>
+        <input id="inp_r" type="range" min="0" max="100" value="50" onchange="document.querySelector('#range').textContent=''+document.querySelector('#inp_r').value+'/100'">
+        <div>
+            <textarea rows="5" cols="20" placeholder="ваш комментарий или доработка для разработчика...."></textarea>
+        </div>
+        <button id="send" onclick="send();">отправить</button>
+    </div>
+    <div id="scripts">
+        <script>
+        if (localStorage.getItem('is-registed')!='yes'){
+                window.location.href = "index.html";
+        }
+        if (localStorage.getItem('koo')=='yes'){
+            document.querySelector('.like').innerHTML='';
+            let l = document.createElement('label')
+            l.textContent='спасибо за оценку!';
+            document.querySelector('.like').appendChild(l)
+        }
+        </script>
+        <script>
+            function send(){
+                function a(){
+                    document.querySelector('.like').innerHTML='';
+                    let l = document.createElement('label')
+                    l.textContent='спасибо за оценку!';
+                    document.querySelector('.like').appendChild(l)
+                }
+                const URL_APP = "https://script.google.com/macros/s/AKfycbxg4m5doQJJjeFoQhIRJl9uu8ZpKDdSPyvp2mQJaBOfLtjuuLgIOLMGG7N-W_PL48Kc1A/exec";
+
+                let details = {
+                    name: '',
+                    email: '',
+                    password: '',
+                    second_name:'',
+                    reg:false,
+                    number:document.querySelector('#range').textContent,
+                    text:document.querySelector('textarea').value,
+                };
+
+                let formBody = [];
+                for (let property in details) {
+                    let encodedKey = encodeURIComponent(property);
+                    let encodedValue = encodeURIComponent(details[property]);
+                    formBody.push(encodedKey + "=" + encodedValue);
+                }
+                formBody = formBody.join("&");  
+
+                const result = fetch(URL_APP, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+            mode: "cors", //<- оставим по умолчанию
+            body: formBody,
+            }).then((res) =>res.json()).then((res)=>console.log(res)).then(localStorage.setItem('koo','yes')).then(a());
+            }
+        </script>
+        <script src="nums.js"></script>
+        <script src="chart.js"></script>
+        <script src="date.js"></script>
+        <script src="blur_input.js"></script>
+        <script src="main-script.js"></script>
+    </div>
+
+</body>
+</html>
